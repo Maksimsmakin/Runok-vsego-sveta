@@ -1,0 +1,58 @@
+import React, { useState } from "react"; import { View, Text, TextInput, Button, FlatList, Image, TouchableOpacity, ScrollView, Alert } from "react-native"; import { SafeAreaView } from "react-native-safe-area-context";
+
+const categories = [ { title: "Гаджеты", desc: "Последние новинки по доступной цене.", image: "https://via.placeholder.com/300x200.png?text=Gadgets", }, { title: "Одежда", desc: "Стиль и тренды от поставщиков напрямую.", image: "https://via.placeholder.com/300x200.png?text=Fashion", }, { title: "Для дома", desc: "Товары для уюта и комфорта в каждом доме.", image: "https://via.placeholder.com/300x200.png?text=Home", }, ];
+
+export default function App() { const [cart, setCart] = useState([]); const [formData, setFormData] = useState({ name: "", phone: "", address: "" });
+
+const addToCart = (item) => { setCart((prev) => [...prev, item]); };
+
+const submitOrder = () => { Alert.alert("Заказ отправлен", Спасибо, ${formData.name}!); setCart([]); setFormData({ name: "", phone: "", address: "" }); };
+
+return ( <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}> <ScrollView contentContainerStyle={{ padding: 16 }}> <Text style={{ fontSize: 28, fontWeight: "bold", textAlign: "center", marginBottom: 16 }}> LuxDrop </Text>
+
+<Text style={{ fontSize: 22, marginBottom: 12 }}>Категории товаров</Text>
+
+    {categories.map((cat, index) => (
+      <View key={index} style={{ marginBottom: 20, borderWidth: 1, borderColor: "#ccc", borderRadius: 10, overflow: "hidden" }}>
+        <Image source={{ uri: cat.image }} style={{ width: "100%", height: 180 }} resizeMode="cover" />
+        <View style={{ padding: 12 }}>
+          <Text style={{ fontSize: 18, fontWeight: "bold" }}>{cat.title}</Text>
+          <Text style={{ marginVertical: 4 }}>{cat.desc}</Text>
+          <Button title="Добавить в корзину" onPress={() => addToCart(cat)} />
+        </View>
+      </View>
+    ))}
+
+    <Text style={{ fontSize: 22, marginTop: 24, marginBottom: 12 }}>Корзина ({cart.length})</Text>
+    {cart.map((item, i) => (
+      <Text key={i}>• {item.title}</Text>
+    ))}
+
+    {cart.length > 0 && (
+      <View style={{ marginTop: 20 }}>
+        <TextInput
+          placeholder="Имя"
+          value={formData.name}
+          onChangeText={(text) => setFormData({ ...formData, name: text })}
+          style={{ borderWidth: 1, borderColor: "#ccc", borderRadius: 6, padding: 8, marginBottom: 12 }}
+        />
+        <TextInput
+          placeholder="Телефон"
+          value={formData.phone}
+          onChangeText={(text) => setFormData({ ...formData, phone: text })}
+          style={{ borderWidth: 1, borderColor: "#ccc", borderRadius: 6, padding: 8, marginBottom: 12 }}
+        />
+        <TextInput
+          placeholder="Адрес доставки"
+          value={formData.address}
+          onChangeText={(text) => setFormData({ ...formData, address: text })}
+          style={{ borderWidth: 1, borderColor: "#ccc", borderRadius: 6, padding: 8, marginBottom: 20 }}
+        />
+        <Button title="Подтвердить заказ" onPress={submitOrder} color="black" />
+      </View>
+    )}
+  </ScrollView>
+</SafeAreaView>
+
+); }
+
